@@ -88,7 +88,8 @@
         <p class="text-gray-500 text-sm mb-10">Connectez-vous à votre espace colocation.</p>
       </div>
 
-      <form action="/login" method="POST" class="space-y-5 fade-up-2">
+      <form action="{{route('login')}}" method="POST" class="space-y-5 fade-up-2">
+        @csrf
 
         <div>
           <label class="block text-sm font-600 text-[#1C1917] mb-1.5">Adresse email</label>
