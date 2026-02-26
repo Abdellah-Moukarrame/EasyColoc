@@ -160,9 +160,9 @@
   <!-- User Profile -->
   <div class="p-4 border-t border-white/10">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-sm">MA</div>
+      <div class="w-9 h-9 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-sm">{{substr($user,0,2)}}</div>
       <div class="min-w-0">
-        <div class="text-white text-sm font-semibold truncate">Marie Dupont</div>
+        <div class="text-white text-sm font-semibold truncate">{{$user}}</div>
         <div class="flex items-center gap-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400" style="animation:pulse-dot 2s ease-in-out infinite"></span>
           <span class="text-gray-500 text-xs">Sans colocation</span>
@@ -185,7 +185,7 @@
   <!-- Top bar -->
   <div class="px-10 pt-8 pb-0 fu">
     <p class="text-gray-400 text-sm">Lundi 23 février 2026</p>
-    <h1 class="serif text-4xl text-[#1C1917] mt-0.5">Bonjour, Marie 👋</h1>
+    <h1 class="serif text-4xl text-[#1C1917] mt-0.5">Bonjour, {{$user}} 👋</h1>
   </div>
 
   <!-- Center content -->
@@ -338,8 +338,8 @@
       </div>
     </div>
 
-    <form action="/colocations" method="POST" class="space-y-4">
-
+    <form action="{{route('welcome.dashboard')}}" method="POST" class="space-y-4">
+      @csrf
       <div>
         <label class="block text-sm font-semibold text-[#1C1917] mb-1.5">
           Nom de la colocation <span class="text-red-400">*</span>
@@ -348,19 +348,11 @@
           class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-amber-400 focus:outline-none transition"/>
       </div>
 
-      <div>
-        <label class="block text-sm font-semibold text-[#1C1917] mb-1.5">
-          Adresse <span class="text-gray-400 font-normal">(optionnel)</span>
-        </label>
-        <input type="text" name="address" placeholder="Ex: 12 rue Voltaire, 75011 Paris"
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-amber-400 focus:outline-none transition"/>
-      </div>
-
       <!-- Owner info -->
       <div class="bg-[#FDF8F2] rounded-xl p-4 flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full bg-amber-500 text-white font-bold text-sm flex items-center justify-center flex-shrink-0">MA</div>
+        <div class="w-9 h-9 rounded-full bg-amber-500 text-white font-bold text-sm flex items-center justify-center flex-shrink-0">{{substr($user,0,2)}}</div>
         <div>
-          <p class="text-sm font-semibold text-[#1C1917]">Marie Dupont</p>
+          <p class="text-sm font-semibold text-[#1C1917]">{{$user}}</p>
           <p class="text-xs text-gray-400">Vous serez le <strong class="text-amber-600">Owner</strong> de cette colocation</p>
         </div>
       </div>
