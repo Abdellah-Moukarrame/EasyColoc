@@ -404,26 +404,21 @@
                         <div class="mt-5 pt-4 border-t border-dashed border-gray-200">
                             <p class="text-xs text-gray-400 mb-3">En attente de membres…</p>
                             <div class="space-y-2">
-                                <div class="flex items-center gap-3 py-2">
-                                    <div
-                                        class="w-9 h-9 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                                        </svg>
+                                @foreach ($members as $member)
+                                    <div class="flex items-center gap-3 py-2">
+                                        <div
+                                            class="w-9 h-9 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-gray-300" fill="none"
+                                                viewBox="0 0 24 24"stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 4v16m8-8H4" />
+                                            </svg>
+                                        </div>
+                                        <p class="text-xs text-gray-300 italic"> {{ $member->user->name }}</p>
                                     </div>
-                                    <p class="text-xs text-gray-300 italic">Colocataire 2</p>
-                                </div>
-                                <div class="flex items-center gap-3 py-2">
-                                    <div
-                                        class="w-9 h-9 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                                        </svg>
-                                    </div>
-                                    <p class="text-xs text-gray-300 italic">Colocataire 3</p>
-                                </div>
+                                @endforeach
+
+
                             </div>
                         </div>
                     </div>
@@ -641,9 +636,9 @@
                 <div class="space-y-2">
                     @foreach ($categories as $category)
                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                            <span class="text-sm font-semibold">{{$category->name}}</span>
+                            <span class="text-sm font-semibold">{{ $category->name }}</span>
 
-                            <form action="{{route('category.destroy',$category->id)}}" method="POST">
+                            <form action="{{ route('category.destroy', $category->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-500 hover:text-red-700 transition">
@@ -745,7 +740,9 @@
                 </div>
             </div>
 
-            <form action="{{ route('invitation.add') }}" method="POST" class="space-y-4">
+            <form action="{{ route('send_invitation') }}" method="POST" class="space-y-4">
+                @csrf
+                <input type="hidden" name="colocation_id" value="{{ $collocation->id }}">
                 <div>
                     <label class="block text-sm font-semibold text-[#1C1917] mb-1.5">
                         Adresse email <span class="text-red-400">*</span>
@@ -837,6 +834,9 @@
                     <select name="paid_by"
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-amber-400 focus:outline-none">
                         <option value="{{ $owner->id }}">{{ $owner->name }}</option>
+                        @foreach ($members as $member)
+                            <option value="{{ $member->id }}">{{ $member->user->name }}</option>
+                        @endforeach
                     </select>
                     <p class="text-xs text-gray-400 mt-1">D'autres membres apparaîtront ici une fois qu'ils auront
                         rejoint.</p>
