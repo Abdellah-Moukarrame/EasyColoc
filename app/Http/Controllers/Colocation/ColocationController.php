@@ -16,9 +16,10 @@ class ColocationController extends Controller
 
         $collocation = Colocation::find($id);
         $categories = Category::where('colocation_id', $collocation->id)->get();
+        $members = Membership::where('colocation_id',$collocation->id)->where('type','member')->get();
         $owner = Membership::where('colocation_id', $collocation->id)->where('type', 'owner')->first()->user;
         // dd($owner);
-        return view('colocations.show', compact('categories', 'collocation', 'owner'));
+        return view('colocations.show', compact('categories', 'collocation', 'owner','members'));
     }
     public function create(Request $request)
     {
