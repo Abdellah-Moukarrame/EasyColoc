@@ -11,14 +11,15 @@ use Illuminate\Queue\SerializesModels;
 
 class InvitationEmail extends Mailable
 {
+    public string $token;
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
     }
 
     /**
