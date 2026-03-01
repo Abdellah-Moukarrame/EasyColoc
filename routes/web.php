@@ -41,4 +41,5 @@ Route::post('/despence/add',[DepencesController::class,'create'])->name('depence
 Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
 //// Invitation
-Route::get('/send_invitation',[MailController::class,"index"])->name('send_invitation');
+Route::post('/send_invitation',[MailController::class,"index"])->name('send_invitation');
+Route::get('/accept_invitation/',[InvitationController::class,'accept'])->name('acceptInvit');
