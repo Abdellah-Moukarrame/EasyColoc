@@ -22,5 +22,6 @@ class Membership extends Model
         'status',
         'solde',
         'joined_at',
+        'token'
     ];
 }
