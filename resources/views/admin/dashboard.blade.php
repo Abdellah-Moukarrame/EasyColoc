@@ -157,23 +157,23 @@
             <div class="bg-[#1C1917] rounded-2xl p-5 text-white relative overflow-hidden">
                 <div class="absolute -right-4 -top-4 w-20 h-20 bg-amber-500 opacity-20 rounded-full"></div>
                 <p class="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">Utilisateurs</p>
-                <p class="serif text-3xl text-amber-400">{{$total_users}}</p>
+                <p class="serif text-3xl text-amber-400">{{ $total_users }}</p>
                 <p class="text-gray-500 text-xs mt-2">↑ +18 ce mois</p>
             </div>
             <div class="bg-white rounded-2xl p-5 border border-gray-100 relative overflow-hidden">
                 <div class="absolute -right-4 -top-4 w-20 h-20 bg-emerald-100 rounded-full"></div>
                 <p class="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">Colocations actives</p>
-                <p class="serif text-3xl text-[#1C1917]">{{$active_colocations}}</p>
+                <p class="serif text-3xl text-[#1C1917]">{{ $active_colocations }}</p>
                 <p class="text-gray-400 text-xs mt-2">↑ +7 cette semaine</p>
             </div>
             <div class="bg-white rounded-2xl p-5 border border-gray-100">
                 <p class="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">Total dépenses</p>
-                <p class="serif text-3xl text-[#1C1917]">{{$total_depences}} DH </p>
+                <p class="serif text-3xl text-[#1C1917]">{{ $total_depences }} DH </p>
                 <p class="text-gray-400 text-xs mt-2">48 340 transactions</p>
             </div>
             <div class="bg-white rounded-2xl p-5 border border-gray-100">
                 <p class="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">Utilisateurs bannis</p>
-                <p class="serif text-3xl text-red-500">{{$banned_users}} User</p>
+                <p class="serif text-3xl text-red-500">{{ $banned_users }} User</p>
                 <p class="text-gray-400 text-xs mt-2">2 cette semaine</p>
             </div>
         </div>
@@ -218,24 +218,51 @@
 
                                 <td class="px-5 py-4">
                                     <div class="flex items-center gap-3">
-
                                         <div
                                             class="w-8 h-8 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center">
-                                            {{ substr($user->name, 0, 2) }}</div>
+                                            {{ substr($user->name, 0, 2) }}
+                                        </div>
                                         <div>
                                             <p class="text-sm font-semibold text-[#1C1917]">{{ $user->name }}</p>
                                             <p class="text-xs text-gray-400">{{ $user->email }}</p>
                                         </div>
-
-
                                     </div>
                                 </td>
 
-                                <td class="px-5 py-4"><span
+                                <td class="px-5 py-4">
+                                    <span
                                         class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-full font-semibold">
-                                        {{ $user->role }}</span></td>
-                                <td class="px-5 py-4 text-sm font-semibold text-[#1C1917]">⭐ +12</td>
-                                <td class="px-5 py-4"><span class="text-gray-300 text-xs">—</span></td>
+                                        {{ $user->role }}
+                                    </span>
+                                </td>
+
+                                <td class="px-5 py-4 text-sm font-semibold text-[#1C1917]">
+                                    {{$user->reputation}}
+                                </td>
+
+
+                                <td class="px-5 py-4">
+                                    @if (!$user->is_banned)
+                                        <form action="{{route('user.ban',$user->id)}}" method="POST">
+                                            @csrf
+                                            @method('POST')
+                                            <button type="submit"
+                                                class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold px-3 py-1.5 rounded-full transition">
+                                                Bannir
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{route('user.unban',$user->id)}}" method="POST">
+                                            @csrf
+                                            @method('POST')
+                                            <button type="submit"
+                                                class="bg-green-50 hover:bg-green-100 text-green-600 text-xs font-semibold px-3 py-1.5 rounded-full transition">
+                                                Débannir
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -250,40 +277,19 @@
 
                 <!-- Colocations actives -->
                 <div class="bg-white rounded-2xl border border-gray-100 p-5">
-                    <h3 class="serif text-base text-[#1C1917] mb-4">Colocations récentes</h3>
+                    <h3 class="serif text-base text-[#1C1917] mb-4">Colocations avec plus des colocataires</h3>
                     <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-semibold text-[#1C1917]">Appartement Voltaire</p>
-                                <p class="text-xs text-gray-400">4 membres · Active</p>
+                        @foreach ($colocation_members as $value)
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold text-[#1C1917]">{{ $value->name }}</p>
+                                    <p class="text-xs text-gray-400">{{ $value->colo_users }} membres </p>
+                                </div>
+                                <span
+                                    class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">{{ $value->status }}</span>
                             </div>
-                            <span
-                                class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-semibold text-[#1C1917]">Studio Oberkampf</p>
-                                <p class="text-xs text-gray-400">2 membres · Active</p>
-                            </div>
-                            <span
-                                class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-500">Villa Méditerranée</p>
-                                <p class="text-xs text-gray-400">5 membres · Annulée</p>
-                            </div>
-                            <span
-                                class="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-semibold">Annulée</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-semibold text-[#1C1917]">Loft Nation</p>
-                                <p class="text-xs text-gray-400">3 membres · Active</p>
-                            </div>
-                            <span
-                                class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
-                        </div>
+                        @endforeach
+
                     </div>
                     <a href="/admin/colocations"
                         class="block text-center text-xs text-amber-600 hover:underline font-semibold mt-4">
@@ -291,57 +297,7 @@
                     </a>
                 </div>
 
-                <!-- Stats par catégorie -->
-                <div class="bg-white rounded-2xl border border-gray-100 p-5">
-                    <h3 class="serif text-base text-[#1C1917] mb-4">Top catégories</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-600">🏠 Loyer</span>
-                                <span class="font-semibold">41%</span>
-                            </div>
-                            <div class="h-1.5 bg-gray-100 rounded-full">
-                                <div class="h-full bg-amber-500 rounded-full" style="width:41%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-600">🛒 Courses</span>
-                                <span class="font-semibold">28%</span>
-                            </div>
-                            <div class="h-1.5 bg-gray-100 rounded-full">
-                                <div class="h-full bg-blue-400 rounded-full" style="width:28%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-600">⚡ Électricité</span>
-                                <span class="font-semibold">15%</span>
-                            </div>
-                            <div class="h-1.5 bg-gray-100 rounded-full">
-                                <div class="h-full bg-emerald-400 rounded-full" style="width:15%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-600">🍽 Restaurant</span>
-                                <span class="font-semibold">10%</span>
-                            </div>
-                            <div class="h-1.5 bg-gray-100 rounded-full">
-                                <div class="h-full bg-rose-400 rounded-full" style="width:10%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-600">📦 Autres</span>
-                                <span class="font-semibold">6%</span>
-                            </div>
-                            <div class="h-1.5 bg-gray-100 rounded-full">
-                                <div class="h-full bg-gray-300 rounded-full" style="width:6%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
             </div>
         </div>
