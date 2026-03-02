@@ -42,4 +42,10 @@ Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy'])->
 
 //// Invitation
 Route::post('/send_invitation',[MailController::class,"index"])->name('send_invitation');
-Route::get('/accept_invitation/',[InvitationController::class,'accept'])->name('acceptInvit');
+Route::get('/accept_invitation',[InvitationController::class,'accept'])->name('acceptInvit');
+
+
+////Ban & unban Users
+
+Route::post('/admin/banUser/{id}',[DashboardController::class,'ban'])->name('user.ban');
+Route::post('/admin/unbanUser/{id}',[DashboardController::class,'unban'])->name('user.unban');
