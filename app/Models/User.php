@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'reputation',
         'is_banned',
     ];
 
@@ -62,5 +63,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Colocation::class, 'memberships')
             ->withPivot('type', 'status', 'solde', 'joined_at', 'left_at', 'token')
             ->withTimestamps();
+    }
+    public function statements()
+    {
+        return $this->hasMany(Statement::class);
     }
 }

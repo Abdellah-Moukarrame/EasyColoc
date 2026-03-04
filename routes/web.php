@@ -9,8 +9,10 @@ use App\Http\Controllers\Depences\DepencesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Invitation\InvitationController;
 use App\Http\Controllers\Mail\MailController;
+use App\Http\Controllers\Membership\MembershipController;
 use App\Http\Controllers\WelcomeDashboardController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\ColocationMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class,'index'])->name('home');
@@ -18,6 +20,7 @@ Route::get('/register',[RegisterController::class,'index'])->name('register');
 Route::post('/register',[RegisterController::class,'register'])->name('register.create');
 Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login',[LoginController::class,'login'])->name('login.create');
+Route::post('/logout',[LoginController::class,'logout'])->name('logout')->middleware('auth');
 
 
 
@@ -33,7 +36,7 @@ Route::post('/welcome',[ColocationController::class,'create'])->name('welcome.cr
 
 //// colocations
 
-Route::get('/colocation/{id}',[ColocationController::class,'index'])->name('colocation.show');
+Route::get('/colocation/{id}',[ColocationController::class,'index'])->name('colocation.show')->middleware(['auth',ColocationMiddleware::class]);
 ////  category
 Route::post('/category/add',[CategoryController::class,'creat'])->name('category');
 Route::post('/invitation/add',[InvitationController::class,'create'])->name('invitation.add');
@@ -49,3 +52,13 @@ Route::get('/accept_invitation',[InvitationController::class,'accept'])->name('a
 
 Route::post('/admin/banUser/{id}',[DashboardController::class,'ban'])->name('user.ban');
 Route::post('/admin/unbanUser/{id}',[DashboardController::class,'unban'])->name('user.unban');
+
+/// depences
+Route::get('/depences/{id}', [DepencesController::class, 'index'])->name('depences.index')->middleware(['auth', ColocationMiddleware::class]);
+
+/// statements
+
+Route::patch('/statement/{id}/paid', [DepencesController::class, 'markPaid'])->name('statement.paid');
+
+
+Route::post('/membership/leave', [MembershipController::class, 'quitter'])->name('membership.quitter')->middleware('auth');

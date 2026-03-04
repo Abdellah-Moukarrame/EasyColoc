@@ -29,17 +29,21 @@ class LoginController extends Controller
             if (Auth::user()->role == 'admin') {
                 return redirect()->route('admin.dashboard');
             }
-            if (Auth::user()->role == 'membre') {
+            if (Auth::user()->role == 'membre' && Auth::user()->is_banned == false) {
                 if ($membership) {
-                    return redirect()->route('colocation.show',['{id}', $membership->colocation_id]);
+                    return redirect()->route('colocation.show', ['{id}', $membership->colocation_id]);
                 }
                 return redirect()->route('welcome.dashboard');
-            }
-            else {
+            } else {
                 return redirect()->route('home');
             }
         } else {
             return redirect()->route('login')->with('error', 'Email or Password are invalid');
         }
+    }
+    public function logout()
+    {
+        auth()->logout();
+        return redirect()->route('login');
     }
 }

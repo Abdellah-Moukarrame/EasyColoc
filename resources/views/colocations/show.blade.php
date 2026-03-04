@@ -169,7 +169,7 @@
 
 <body>
 
-    <!-- ═══════════════════ SIDEBAR — OWNER ═══════════════════ -->
+    <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
     <aside class="w-64 bg-[#1C1917] flex flex-col min-h-screen fixed left-0 top-0 z-30">
 
         <div class="px-6 pt-7 pb-6 border-b border-white/10">
@@ -191,7 +191,7 @@
                 Tableau de bord
             </a>
 
-            <a href="/colocations/1"
+            <a href="{{ route('colocation.show', ['{id}', $collocation->id]) }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold bg-amber-500 text-white">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -201,7 +201,7 @@
                 Ma Colocation
             </a>
 
-            <a href="/expenses"
+            <a href="{{ route('depences.index', ['id' => $collocation->id]) }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -210,59 +210,45 @@
                 Dépenses
             </a>
 
-            <a href="/balances"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 6l3 1m0 0l-3 9a5 5 0 006.47 4.97M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5 5 0 01-6.47 4.97M18 7l3 9" />
-                </svg>
-                Balances
-            </a>
-
-            <a href="/profile"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                Mon profil
-            </a>
-
             <!-- Owner-only section -->
-            <div class="pt-3 mt-3 border-t border-white/10 space-y-1">
-                <p class="px-3 text-xs text-gray-600 font-bold uppercase tracking-widest mb-2">Owner</p>
+            @if (auth()->user()->id == $owner->id)
+                <div class="pt-3 mt-3 border-t border-white/10 space-y-1">
+                    <p class="px-3 text-xs text-gray-600 font-bold uppercase tracking-widest mb-2">Owner</p>
 
-                <a href="/colocations/1/invite"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    Inviter des membres
-                    <!-- New badge -->
-                    <span class="ml-auto bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-bold">!</span>
-                </a>
+                    <a href="/colocations/1/invite"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        Inviter des membres
+                        <!-- New badge -->
+                        <span
+                            class="ml-auto bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-bold">!</span>
+                    </a>
 
-                <a href="/categories"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a2 2 0 012-2z" />
-                    </svg>
-                    Catégories
-                </a>
+                    <a href="/categories"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a2 2 0 012-2z" />
+                        </svg>
+                        Catégories
+                    </a>
 
-                <a href="/colocations/1/edit"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <circle cx="12" cy="12" r="3" />
-                    </svg>
-                    Gérer la colocation
-                </a>
+                    <a href="/colocations/1/edit"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/10 transition">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        Gérer la colocation
+                    </a>
 
-            </div>
+                </div>
+            @endif
+
 
         </nav>
 
@@ -270,17 +256,20 @@
             <div class="flex items-center gap-3">
                 <div
                     class="w-9 h-9 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-sm">
-                    {{ substr($owner->name, 0, 2) }}</div>
+                    {{ substr(auth()->user()->name, 0, 2) }}</div>
                 <div class="min-w-0">
-                    <div class="text-white text-sm font-semibold truncate">{{ $owner->name }}</div>
-                    <div class="text-amber-400 text-xs font-semibold">Owner</div>
+                    <div class="text-white text-sm font-semibold truncate">{{ auth()->user()->name }}</div>
+                    <div class="text-amber-400 text-xs font-semibold">You</div>
                 </div>
-                <a href="/logout" class="ml-auto text-gray-600 hover:text-red-400 transition">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
-                    </svg>
-                </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="ml-auto text-gray-600 hover:text-red-400 transition">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                        </svg>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -298,31 +287,9 @@
 
             <div class="relative z-10 flex items-center justify-between">
                 <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span
-                            class="bg-emerald-500 text-white text-xs px-3 py-0.5 rounded-full font-semibold flex items-center gap-1.5">
-                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
-                            Active
-                        </span>
-                        <span class="text-gray-500 text-xs">Créée aujourd'hui · 23 fév. 2026</span>
-                    </div>
-                    <h1 class="serif text-4xl text-white mb-1">Appartement Voltaire</h1>
+                    <h1 class="serif text-4xl text-white mb-1">{{ $collocation->name }}</h1>
                     <p class="text-gray-400 text-sm">Votre colocation vient d'être créée — invitez vos colocataires
                         pour commencer !</p>
-
-                    <!-- Stats row -->
-                    <div class="flex items-center gap-5 mt-5">
-                        <div class="flex items-center gap-2">
-                            <div
-                                class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-bold">
-                                MA</div>
-                            <span class="text-gray-400 text-sm">1 membre</span>
-                        </div>
-                        <span class="text-gray-700">·</span>
-                        <span class="text-gray-500 text-sm">0 dépense</span>
-                        <span class="text-gray-700">·</span>
-                        <span class="text-gray-500 text-sm">Total : 0 €</span>
-                    </div>
                 </div>
 
                 <!-- Actions -->
@@ -424,24 +391,29 @@
                     </div>
 
                     <!-- Invite CTA card -->
-                    <div class="bg-[#1C1917] rounded-2xl p-5 relative overflow-hidden">
-                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-amber-500 opacity-15 rounded-full blur-xl">
+                    @if (auth()->user()->id == $owner->id)
+                        <div class="bg-[#1C1917] rounded-2xl p-5 relative overflow-hidden">
+                            <div
+                                class="absolute -top-6 -right-6 w-24 h-24 bg-amber-500 opacity-15 rounded-full blur-xl">
+                            </div>
+                            <div class="relative z-10">
+                                <p class="text-amber-400 font-bold text-sm mb-1">Vous êtes seul pour l'instant !</p>
+                                <p class="text-gray-400 text-xs leading-relaxed mb-4">Invitez vos colocataires par
+                                    email
+                                    pour commencer à partager les dépenses.</p>
+                                <button onclick="document.getElementById('modal-invite').classList.remove('hidden')"
+                                    class="w-full bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
+                                    </svg>
+                                    Envoyer une invitation
+                                </button>
+                            </div>
                         </div>
-                        <div class="relative z-10">
-                            <p class="text-amber-400 font-bold text-sm mb-1">Vous êtes seul pour l'instant !</p>
-                            <p class="text-gray-400 text-xs leading-relaxed mb-4">Invitez vos colocataires par email
-                                pour commencer à partager les dépenses.</p>
-                            <button onclick="document.getElementById('modal-invite').classList.remove('hidden')"
-                                class="w-full bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
-                                </svg>
-                                Envoyer une invitation
-                            </button>
-                        </div>
-                    </div>
+                    @endif
+
 
                 </div>
 
@@ -540,43 +512,6 @@
                         </div>
                     </div>
 
-                    <!-- 3 quick action cards -->
-                    <div class="fu4 grid grid-cols-3 gap-4">
-
-                        <div class="step-card text-center">
-                            <div
-                                class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-xl mx-auto mb-3">
-                                📧</div>
-                            <h4 class="font-bold text-sm text-[#1C1917] mb-1">Inviter</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed mb-3">Envoyez un lien d'invitation à vos
-                                colocataires</p>
-                            <button onclick="document.getElementById('modal-invite').classList.remove('hidden')"
-                                class="text-xs text-amber-600 font-bold hover:underline">Envoyer →</button>
-                        </div>
-
-                        <div class="step-card text-center">
-                            <div
-                                class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-xl mx-auto mb-3">
-                                💸</div>
-                            <h4 class="font-bold text-sm text-[#1C1917] mb-1">Première dépense</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed mb-3">Ajoutez le loyer ou les premières
-                                courses</p>
-                            <button onclick="document.getElementById('modal-expense').classList.remove('hidden')"
-                                class="text-xs text-amber-600 font-bold hover:underline">Ajouter →</button>
-                        </div>
-
-                        <div class="step-card text-center">
-                            <div
-                                class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-xl mx-auto mb-3">
-                                🏷️</div>
-                            <h4 class="font-bold text-sm text-[#1C1917] mb-1">Catégories</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed mb-3">Personnalisez vos catégories de
-                                dépenses</p>
-                            <a href="/categories" class="text-xs text-amber-600 font-bold hover:underline">Gérer →</a>
-                        </div>
-
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -619,156 +554,259 @@
 
 
         <!-- ════════ TAB: Catégories ════════ -->
-        <div id="pane-categories" class="">
-            <div class="bg-white rounded-2xl border border-gray-100 p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="serif text-lg text-[#1C1917]">Catégories</h3>
-                    <button onclick="document.getElementById('modal-category').classList.remove('hidden')"
-                        class="flex items-center gap-2 bg-[#1C1917] hover:bg-amber-600 text-white text-sm font-bold px-4 py-2 rounded-xl transition">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Nouvelle catégorie
-                    </button>
+
+        @if (auth()->user()->memberships()->where([
+                    'type' => 'owner',
+                ])->exists())
+            <div id="pane-categories" class="">
+                <div class="bg-white rounded-2xl border border-gray-100 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="serif text-lg text-[#1C1917]">Catégories</h3>
+                        <button onclick="document.getElementById('modal-category').classList.remove('hidden')"
+                            class="flex items-center gap-2 bg-[#1C1917] hover:bg-amber-600 text-white text-sm font-bold px-4 py-2 rounded-xl transition">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Nouvelle catégorie
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        @foreach ($categories as $category)
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                                <span class="text-sm font-semibold">{{ $category->name }}</span>
+
+                                <form action="{{ route('category.destroy', $category->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-500 hover:text-red-700 transition">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        @endforeach
+
+                    </div>
                 </div>
+            </div>
 
-                <div class="space-y-2">
-                    @foreach ($categories as $category)
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                            <span class="text-sm font-semibold">{{ $category->name }}</span>
 
-                            <form action="{{ route('category.destroy', $category->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 transition">
-                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </form>
+            <!-- ═══════════════════ MODAL: Nouvelle catégorie ═══════════════════ -->
+            <div id="modal-category"
+                class="hidden fixed inset-0 bg-black/45 backdrop-blur-sm z-50 flex items-center justify-center">
+
+                <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative">
+
+                    <!-- Close -->
+                    <button onclick="document.getElementById('modal-category').classList.add('hidden')"
+                        class="absolute right-5 top-5 text-gray-300 hover:text-gray-600 transition">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <!-- Header -->
+                    <div class="flex items-center gap-4 mb-7">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl flex-shrink-0">
+                            🏷️
                         </div>
-                    @endforeach
+                        <div>
+                            <h3 class="serif text-2xl text-[#1C1917]">Nouvelle catégorie</h3>
+                            <p class="text-xs text-gray-400">Disponible pour toutes les dépenses de la colocation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+
+                    <form action="{{ route('category') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <input type="hidden" name="colocation_id" value="{{ $collocation->id }}">
+                        <div>
+                            <label class="block text-sm font-semibold text-[#1C1917] mb-1.5">
+                                Nom de la catégorie <span class="text-red-400">*</span>
+                            </label>
+                            <input type="text" name="name" placeholder="Ex: 🚗 Transport" required
+                                minlength="2"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-amber-400 focus:outline-none transition" />
+                            <p class="text-xs text-gray-400 mt-1.5">Conseil : ajoutez un emoji devant pour mieux
+                                identifier
+                                la catégorie.</p>
+                        </div>
+
+                        <div class="flex gap-3 pt-2">
+                            <button type="button"
+                                onclick="document.getElementById('modal-category').classList.add('hidden')"
+                                class="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl text-sm font-semibold hover:bg-gray-50 transition">
+                                Annuler
+                            </button>
+                            <button type="submit"
+                                class="flex-1 bg-[#1C1917] hover:bg-amber-600 text-white py-3 rounded-xl text-sm font-bold transition">
+                                Ajouter →
+                            </button>
+                        </div>
+                    </form>
 
                 </div>
             </div>
+        @endif
+        <!-- ════════ TAB: Balances ════════ -->
+        <div id="pane-balances" class="">
+            @if ($statements->isEmpty())
+                <div class="bg-white rounded-2xl border border-gray-100 p-16 text-center">
+                    <div
+                        class="float w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center text-3xl mx-auto mb-5">
+                        ⚖️</div>
+                    <h3 class="serif text-2xl text-[#1C1917] mb-2">Tout le monde est à zéro</h3>
+                    <p class="text-gray-400 text-sm max-w-xs mx-auto leading-relaxed">
+                        Les balances apparaîtront ici dès que vous aurez ajouté des dépenses.
+                    </p>
+                </div>
+            @else
+                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="serif text-lg text-[#1C1917]">Qui doit quoi à qui ?</h3>
+                        <span class="text-xs text-gray-400 font-semibold">{{ $statements->count() }} règlement(s) en
+                            attente</span>
+                    </div>
+
+                    <div class="divide-y divide-gray-50">
+                        @foreach ($statements as $statement)
+                            <div class="flex items-center gap-4 px-6 py-4 hover:bg-gray-50/50 transition">
+
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <div
+                                        class="w-9 h-9 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold text-sm flex-shrink-0">
+                                        {{ strtoupper(substr($statement->user->name, 0, 1)) }}
+                                    </div>
+                                    <span
+                                        class="text-sm font-semibold text-[#1C1917] truncate">{{ $statement->user->name }}</span>
+                                </div>
+
+                                <div class="flex items-center gap-1 text-gray-300 flex-shrink-0">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </div>
+
+
+                                <div class="flex items-center gap-2 flex-1 min-w-0">
+                                    <div
+                                        class="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-sm flex-shrink-0">
+                                        {{ strtoupper(substr($statement->receiver->name, 0, 1)) }}
+                                    </div>
+                                    <span
+                                        class="text-sm font-semibold text-[#1C1917] truncate">{{ $statement->receiver->name }}</span>
+                                </div>
+
+
+                                <div class="text-right flex-shrink-0">
+                                    <span
+                                        class="text-sm font-bold text-red-500">{{ number_format($statement->amount_to_pay, 2) }}
+                                        €</span>
+                                    <p class="text-xs text-gray-400">{{ $statement->depence->name }}</p>
+                                </div>
+
+
+                                @if (auth()->id() == $statement->user_id)
+                                    <form action="{{ route('statement.paid', $statement->id) }}" method="POST"
+                                        class="flex-shrink-0">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit"
+                                            class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-2 rounded-xl transition">
+                                            ✓ Marquer payé
+                                        </button>
+                                    </form>
+                                @else
+                                    <span
+                                        class="text-xs text-amber-500 font-semibold bg-amber-50 px-3 py-2 rounded-xl flex-shrink-0">En
+                                        attente</span>
+                                @endif
+
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
 
 
-        <!-- ═══════════════════ MODAL: Nouvelle catégorie ═══════════════════ -->
-        <div id="modal-category"
-            class="hidden fixed inset-0 bg-black/45 backdrop-blur-sm z-50 flex items-center justify-center">
 
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative">
 
-                <!-- Close -->
-                <button onclick="document.getElementById('modal-category').classList.add('hidden')"
+    </main>
+
+
+    <!-- ═══════════════════ MODAL: Inviter ═══════════════════ -->
+    @if (auth()->user()->memberships()->where([
+                'type' => 'owner',
+            ])->exists())
+        <div id="modal-invite" class="modal-backdrop hidden">
+            <div class="modal-card">
+                <button onclick="document.getElementById('modal-invite').classList.add('hidden')"
                     class="absolute right-5 top-5 text-gray-300 hover:text-gray-600 transition">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
 
-                <!-- Header -->
                 <div class="flex items-center gap-4 mb-7">
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl flex-shrink-0">
-                        🏷️
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
                     </div>
                     <div>
-                        <h3 class="serif text-2xl text-[#1C1917]">Nouvelle catégorie</h3>
-                        <p class="text-xs text-gray-400">Disponible pour toutes les dépenses de la colocation.</p>
+                        <h3 class="serif text-2xl text-[#1C1917]">Inviter un colocataire</h3>
+                        <p class="text-xs text-gray-400">Un email avec un lien d'invitation sera envoyé.</p>
                     </div>
                 </div>
 
-                <!-- Form -->
-                <form action="{{ route('category') }}" method="POST" class="space-y-4">
+                <form action="{{ route('send_invitation') }}" method="POST" class="space-y-4">
                     @csrf
                     <input type="hidden" name="colocation_id" value="{{ $collocation->id }}">
                     <div>
                         <label class="block text-sm font-semibold text-[#1C1917] mb-1.5">
-                            Nom de la catégorie <span class="text-red-400">*</span>
+                            Adresse email <span class="text-red-400">*</span>
                         </label>
-                        <input type="text" name="name" placeholder="Ex: 🚗 Transport" required minlength="2"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-amber-400 focus:outline-none transition" />
-                        <p class="text-xs text-gray-400 mt-1.5">Conseil : ajoutez un emoji devant pour mieux identifier
-                            la catégorie.</p>
+                        <input type="email" name="email" placeholder="colocataire@exemple.fr"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-amber-400 focus:outline-none" />
                     </div>
 
-                    <div class="flex gap-3 pt-2">
+                    <div
+                        class="bg-[#FDF8F2] border border-gray-100 rounded-xl p-4 text-xs text-gray-500 leading-relaxed">
+                        📌 Le lien d'invitation est valable <strong>48 heures</strong>. L'invité doit avoir un compte
+                        CoLoc
+                        avec le même email.
+                    </div>
+
+                    <div class="flex gap-3">
                         <button type="button"
-                            onclick="document.getElementById('modal-category').classList.add('hidden')"
+                            onclick="document.getElementById('modal-invite').classList.add('hidden')"
                             class="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl text-sm font-semibold hover:bg-gray-50 transition">
                             Annuler
                         </button>
                         <button type="submit"
-                            class="flex-1 bg-[#1C1917] hover:bg-amber-600 text-white py-3 rounded-xl text-sm font-bold transition">
-                            Ajouter →
+                            class="flex-1 bg-amber-500 hover:bg-amber-400 text-white py-3 rounded-xl text-sm font-bold transition">
+                            Envoyer l'invitation →
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
+    @endif
 
-    </main>
-
-
-    <!-- ═══════════════════ MODAL: Inviter ═══════════════════ -->
-    <div id="modal-invite" class="modal-backdrop hidden">
-        <div class="modal-card">
-            <button onclick="document.getElementById('modal-invite').classList.add('hidden')"
-                class="absolute right-5 top-5 text-gray-300 hover:text-gray-600 transition">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-
-            <div class="flex items-center gap-4 mb-7">
-                <div class="w-12 h-12 rounded-2xl bg-amber-500 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                        stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="serif text-2xl text-[#1C1917]">Inviter un colocataire</h3>
-                    <p class="text-xs text-gray-400">Un email avec un lien d'invitation sera envoyé.</p>
-                </div>
-            </div>
-
-            <form action="{{ route('send_invitation') }}" method="POST" class="space-y-4">
-                @csrf
-                <input type="hidden" name="colocation_id" value="{{ $collocation->id }}">
-                <div>
-                    <label class="block text-sm font-semibold text-[#1C1917] mb-1.5">
-                        Adresse email <span class="text-red-400">*</span>
-                    </label>
-                    <input type="email" name="email" placeholder="colocataire@exemple.fr"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-amber-400 focus:outline-none" />
-                </div>
-
-                <div class="bg-[#FDF8F2] border border-gray-100 rounded-xl p-4 text-xs text-gray-500 leading-relaxed">
-                    📌 Le lien d'invitation est valable <strong>48 heures</strong>. L'invité doit avoir un compte CoLoc
-                    avec le même email.
-                </div>
-
-                <div class="flex gap-3">
-                    <button type="button" onclick="document.getElementById('modal-invite').classList.add('hidden')"
-                        class="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl text-sm font-semibold hover:bg-gray-50 transition">
-                        Annuler
-                    </button>
-                    <button type="submit"
-                        class="flex-1 bg-amber-500 hover:bg-amber-400 text-white py-3 rounded-xl text-sm font-bold transition">
-                        Envoyer l'invitation →
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
 
     <!-- ═══════════════════ MODAL: Ajouter dépense ═══════════════════ -->
@@ -835,7 +873,7 @@
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-amber-400 focus:outline-none">
                         <option value="{{ $owner->id }}">{{ $owner->name }}</option>
                         @foreach ($members as $member)
-                            <option value="{{ $member->id }}">{{ $member->user->name }}</option>
+                            <option value="{{ $member->user_id }}">{{ $member->user->name }}</option>
                         @endforeach
                     </select>
                     <p class="text-xs text-gray-400 mt-1">D'autres membres apparaîtront ici une fois qu'ils auront
@@ -854,6 +892,7 @@
             </form>
         </div>
     </div>
+
 
 
     <script>

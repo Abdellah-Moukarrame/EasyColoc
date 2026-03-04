@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Colocation;
 use App\Models\Membership;
+use App\Models\Statement;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -18,11 +19,15 @@ class ColocationController extends Controller
         $categories = Category::where('colocation_id', $collocation->id)->get();
         $members = Membership::where('colocation_id',$collocation->id)->where('type','member')->get();
         $owner = Membership::where('colocation_id', $collocation->id)->where('type', 'owner')->first()->user;
+        $statements = Statement::where('colocation_id', $collocation->id)->where('status', 'unpaid')->with(['user', 'receiver'])->get();
+        // $users = Membership::where('colocation_id', $collocation->id)->get();
+
         // dd($owner);
-        return view('colocations.show', compact('categories', 'collocation', 'owner','members'));
+        return view('colocations.show', compact('categories', 'collocation', 'owner','members','statements'));
     }
     public function create(Request $request)
     {
+        
 
         if (!Membership::where(['user_id' => auth()->user()->id, 'type' => 'owner'])->whereHas('colocation', function ($query) {
             $query->where('status', 'active');

@@ -127,6 +127,15 @@
                     <div class="text-white text-sm font-semibold truncate">Admin Principal</div>
                     <div class="text-amber-400 text-xs">Global Admin</div>
                 </div>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="ml-auto text-gray-600 hover:text-red-400 transition">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                        </svg>
+                    </button>
+                </form>
             </div>
         </div>
     </aside>
@@ -237,13 +246,13 @@
                                 </td>
 
                                 <td class="px-5 py-4 text-sm font-semibold text-[#1C1917]">
-                                    {{$user->reputation}}
+                                    {{ $user->reputation }}
                                 </td>
 
 
                                 <td class="px-5 py-4">
                                     @if (!$user->is_banned)
-                                        <form action="{{route('user.ban',$user->id)}}" method="POST">
+                                        <form action="{{ route('user.ban', $user->id) }}" method="POST">
                                             @csrf
                                             @method('POST')
                                             <button type="submit"
@@ -252,7 +261,7 @@
                                             </button>
                                         </form>
                                     @else
-                                        <form action="{{route('user.unban',$user->id)}}" method="POST">
+                                        <form action="{{ route('user.unban', $user->id) }}" method="POST">
                                             @csrf
                                             @method('POST')
                                             <button type="submit"

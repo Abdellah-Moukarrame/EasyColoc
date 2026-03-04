@@ -7,19 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class OwnerMiddleware
+class ColocationMiddleware
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
+        $colocation_id = $request->route('id');
 
-        if (Auth::check()&&Auth::user()->memberships->type == 'owner') {
-            return $next($request);
+        $member = Auth::user()->memberships()->where(['colocation_id'=> $colocation_id,'left_at'=>null])->exists();
+
+        if (!$member) {
+            abort(403);
         }
-        return back();
+
+        return $next($request);
     }
 }
